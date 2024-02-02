@@ -14,7 +14,16 @@ function ActionsContent(props) {
     const id = props.membreId
 
     const loadMembre = async () => {
-        await axios.get(`http://localhost:8081/api/v1/membres/id/${id}`)
+        const token = localStorage.getItem("token")
+
+        await axios.get(`http://localhost:8081/api/v1/membres/id/${id}`,
+                        {
+                        headers: {
+                            "Content-Type": "Application/json",
+                            "Authorization": `Bearer ${token}`,
+                        }
+                    }
+                        )
                     .then(res => {
                         setMembre(res.data)  
                         setPending(false)     
@@ -35,7 +44,16 @@ function ActionsContent(props) {
 
       const onSubmit = async (data) => {
             const jsonData = JSON.stringify(data)
-            await axios.put(`http://localhost:8081/api/v1/membres/edit/${id}`, jsonData, {headers: {'Content-Type': 'application/json'}})       
+            const token = localStorage.getItem('token')
+            
+            await axios.put(`http://localhost:8081/api/v1/membres/edit/${id}`, 
+                                jsonData, 
+                                {
+                                    headers: {
+                                            'Content-Type': 'application/json',
+                                             'Authorization': `Bearer ${token}`,   
+                                        }
+                                })       
                     .then(response => {
                         response.status === 202 && toast.success('Membre modifié!')                           
                     })

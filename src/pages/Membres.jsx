@@ -7,6 +7,8 @@ import TableLoader from '../components/TableLoader'
 import avatar from '../img/avatar.jpg'
 import CompteDetails from '../components/compteDetail/CompteDetails'
 import AddMembreForm from '../components/AddMembreForm'
+import { redirect } from 'react-router-dom'
+import toast, { resolveValue } from 'react-hot-toast'
 
 function Membres() {    
 
@@ -29,14 +31,29 @@ function Membres() {
     {/*--------Affichage des Membres dans table-------------*/}
 
     const fetchdata = async () =>{
-        
-        await axios.get(`http://localhost:8081/api/v1/membres/all`)
-        .then(res =>{
-          const result = res.data
-          setRows(result.sort((a, b) => b.id_membre - a.id_membre))  
-          setPayments(result.paymentsSet) 
-          setPending(false)
-        })
+
+        const token = localStorage.getItem("token")
+
+        const config = {
+            headers:{
+                'Content-Type': 'application/json',
+                 'Authorization': `Bearer ${token}`,
+            }
+        }
+        await axios.get(`http://localhost:8081/api/v1/membres/all`, config)
+                    .then(res =>{
+                        
+                        const result = res.data
+                        setRows(result.sort((a, b) => b.id_membre - a.id_membre))  
+                        setPayments(result.paymentsSet) 
+                        setPending(false)
+                    })
+                    .catch((errors) => {
+                        if(errors.response.status  === 403) {
+                            toast.error("Pease log in again !")  
+                            //redirect("/auth")
+                      } 
+                    })
       }     
       {/*--------Handling filtering search-------------*/}
       const handleSearch = (e) => {
@@ -86,7 +103,7 @@ function Membres() {
         },
         {            
             name: "Date d'éxpriation",
-            selector: row => row.paiementsSet.pop().date_expiration,
+            selector: row => row.paiementsSet.date_expiration,
             sortable: true,                                                                                                         
             width: "170px"
         },

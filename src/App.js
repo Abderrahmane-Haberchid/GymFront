@@ -9,21 +9,31 @@ import Statis from './pages/Statis';
 import Membres from './pages/Membres';
 import Supplements from './pages/Supplemets';
 import Login from './pages/Login';
+import Register from './pages/Register';
+import PrivateRoutes from './utils/PrivateRoutes';
 
 function App() {
   
+  const token = localStorage.getItem("token")
+
   return (
     <div className='app'>
       <div><Toaster/></div>
+      
+
     <Router>
-        
-      <Sidebar />
+    {token === "" ? "" : <Sidebar />} 
       <Routes>
-      <Route path="/auth" element={<Login />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/statistiques" element={<Statis />} />
-        <Route path="/membres" element={<Membres />} />
-        <Route path="/supplements" element={<Supplements />} />
+        <Route path='/auth' element={<Login/>} />
+        <Route path='/register' element={<Register/>} />
+
+        <Route element={<PrivateRoutes />} >
+              <Route path='/' element={<Home/>} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/statistiques" element={<Statis />} />
+              <Route path="/membres" element={<Membres />} />
+              <Route path="/supplements" element={<Supplements />} />
+        </Route> 
       </Routes>
     </Router>  
     </div>

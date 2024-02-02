@@ -9,7 +9,16 @@ function ProfileContent(props) {
     const id = props.membreId
 
     const fetchUser = async () => {
-        await axios.get(`http://localhost:8081/api/v1/membres/id/${id}`)
+      const token = localStorage.getItem('token')
+
+        await axios.get(`http://localhost:8081/api/v1/membres/id/${id}`,
+                          {
+                            headers: {
+                              'Content-Type': 'Application/json',
+                              'Authorization': `Bearer ${token}`,
+                            }
+                          }
+                        )
         .then(res => {            
             setMembre(res.data)
             setSpiner(false)

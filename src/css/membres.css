@@ -16,6 +16,11 @@
 .add-btn{
     margin-left:155px;
     justify-content: left;
+}.add-btn button:hover{
+    animation-duration: 1s;
+       animation-direction: reverse;
+       transition: 0.5s;
+       background-color: #512da8;
 }
 .sorting-option{
     justify-content: right;

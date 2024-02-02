@@ -18,10 +18,18 @@ function AddMembreForm(props) {
      // Submit add Membre Form
      const onSubmit = async (data) => {            
 
+        const token = localStorage.getItem("token")
         const jsonData = JSON.stringify(data)
+        
         await axios.post(`http://localhost:8081/api/v1/membres/save`,
                          jsonData, 
-                         {headers: {'Content-Type': 'application/json'}}) 
+                         {
+                            headers: {
+                                    'Content-Type': 'application/json',
+                                    Authorization: `Bearer ${token}`
+                            }  
+                        }
+                        ) 
 
                     .then(response =>{
                         response?.status === 201 && toast.success('Membre ajouté')

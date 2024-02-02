@@ -13,8 +13,15 @@ function PaymentsContent(props) {
     const id = props.membreId
 
     const fetchdata = async () =>{
-        
-        await axios.get(`http://localhost:8081/api/v1/membres/id/${id}`)
+        const token = localStorage.getItem('token')
+        await axios.get(`http://localhost:8081/api/v1/membres/id/${id}`,
+                        {
+                            headers: {
+                                'Content-Type': 'Application/json',
+                                'Authorization': `Bearer ${token}`,
+                            }
+                        }
+                        )
         .then(res =>{
           setPayment(res.data.paiementsSet.sort((a, b) => b.id - a.id))
           setPending(false)

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../css/style.css';
 import { Link } from 'react-router-dom';
-
+import { redirect } from "react-router-dom";
 
 
 function Sidebar() {
@@ -64,8 +64,13 @@ function Sidebar() {
         }
       }
     }, [])
-    
-    
+
+    const logout = () => {
+        localStorage.setItem("token", "")
+        if (localStorage.getItem("token") === "") {
+            return redirect("/auth")
+        }        
+    }
 
   return (
     <>
@@ -117,7 +122,7 @@ function Sidebar() {
                 </li>
                 <br />
                 <li>
-                    <Link className='links'>
+                    <Link to="/auth" className='links' onClick={logout}>
                         <i className='bx bx-log-out  bx-sm icon'></i>    
                         <span className='text'>Log out</span>
                     </Link>

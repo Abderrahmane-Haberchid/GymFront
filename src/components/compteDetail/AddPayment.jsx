@@ -14,8 +14,16 @@ function AddPayment(props) {
 
     const onSubmit = async (data) => {
         const jsonData = JSON.stringify(data)
-        console.log(jsonData)
-        await axios.post(`http://localhost:8081/api/v1/membres/add_payment/${id}`, jsonData, {headers: {'Content-Type': 'application/json'}})
+        const token = localStorage.getItem("token")
+        
+        await axios.post(`http://localhost:8081/api/v1/membres/add_payment/${id}`,
+                                 jsonData, 
+                                 {
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${token}`,
+                                    }
+                                })
                 .then(response => {
                     response.status === 200 && toast.success("Paiement validé!")
                 })

@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import avatar from '../img/avatar.jpg'
 import Loader from './Loader';
 import axios from 'axios';
+import toast from 'react-hot-toast';
+import { redirect } from 'react-router-dom';
 import CompteDetails from './compteDetail/CompteDetails';
 
 function UserCard() {
@@ -22,14 +24,27 @@ function UserCard() {
     }
 
       const dataLoader = async () => {
-              await axios.get(`http://localhost:8081/api/v1/membres/all`)
+
+        const token = localStorage.getItem("token")
+              await axios.get('http://localhost:8081/api/v1/membres/all',
+                              {
+                                headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                                }
+                              }
+                      )
                       .then(res => {
                         const data = res.data
                         setUsers(data.sort((a, b) => b.id_membre - a.id_membre))
                         setPending(false)
                       })
                       .catch(errors => {
-                        console.log(errors)
+                        if(errors.response.status  === 403) {
+                          toast.error("403 error !"+token)  
+                         // redirect("/auth")
+                        } 
+                        else toast.error("An error has occured !")
                       })
       }
       useEffect(() => {
@@ -59,7 +74,7 @@ function UserCard() {
     })
     .map((user, index) =>  
 
-    <Link to="/gym-dashboard" id={user.id_membre}  key={index} className='usercard shadow' onClick={handleShow}>
+    <Link to="/" id={user.id_membre}  key={index} className='usercard shadow' onClick={handleShow}>
                 <ul className="list-iems-card">   
                 <li>
                     <img src={avatar} alt="" width="70" className="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm" />
