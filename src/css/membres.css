@@ -1,22 +1,17 @@
 
-.container{
-    margin-top: 40px;
-    display: flexbox;
-    min-width: 900px;
-    z-index: 50;
-}
+
 .table-header{
     display: flex;
     flex-direction: row;
-    
-    margin-bottom: -30px;
-    position: relative;
-    z-index: 51;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 .add-btn{
     margin-left:155px;
     justify-content: left;
-}.add-btn button:hover{
+}
+.add-btn button:hover{
     animation-duration: 1s;
        animation-direction: reverse;
        transition: 0.5s;
@@ -47,9 +42,11 @@
 .compte-container{   
     margin: 0;
     padding: 0;
+    height: 100vh;
     background: var(--sidebar-color);
 }
 .form-container{
+    position: absolute;
     display: flex;
     justify-content: center;     
 }
@@ -73,5 +70,15 @@
 @media (max-width: 700px) {
     .table-header{
         flex-direction: column;
+    }
+    .add-btn{
+        margin-bottom: 30px;
+        margin-top: 30px;
+        justify-content: center;
+    }
+    .sorting-option{
+        display: flexbox;
+        justify-content: center;
+        margin-left: 60px;
     }
   }

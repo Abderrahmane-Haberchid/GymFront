@@ -26,8 +26,8 @@ function Register() {
                 if(res.status === 200){ 
                     
                     localStorage.setItem("token", res.data.token)
-                    console.log(localStorage.getItem("token"))
-                    toast.success("Account created ! Welcome "+resgiterData)
+
+                    toast.success("Account created ! Welcome")
                 }
                                
               })
@@ -38,6 +38,11 @@ function Register() {
   }
 
   return (
+
+    <div className="container" id="container">
+
+   
+    <div className="form-container sign-in">
     
     <form onSubmit={handleSubmit(onSubmitRegister)}>
         <h1>Create Account</h1>
@@ -50,7 +55,7 @@ function Register() {
         <span>or use your email for registeration</span>
         <input type="text"
                {...register('name')} 
-               placeholder="Name" 
+               placeholder="Gym Club Name" 
             />
 
         <input type="mail"
@@ -64,6 +69,8 @@ function Register() {
             />
         <button>Sign Up</button>
     </form>
+    </div>
+    </div>
   )
 }
 

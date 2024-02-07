@@ -5,7 +5,7 @@ import ActionsContent from './ActionsContent'
 import PaymentsContent from './PaymentsContent'
 import AddPayment from './AddPayment'
 import Offcanvas from 'react-bootstrap/Offcanvas'
-import avatar from 'C:/xampp/htdocs/gym_frontend/gym-dashboard/src/img/avatar.jpg'
+import avatar from '/Users/abderahman/Developer/GymFront/GymFrontend/src/img/avatar.jpg'
 import { Link } from 'react-router-dom'
 
 function CompteDetails(props) {
@@ -47,8 +47,11 @@ function CompteDetails(props) {
         setShowActions(false)
         setShowPayments(false)  
       }
-      //let id = 0;
+      
       const id = props.idmembre === "" ? "" : props.idmembre
+      //const id = 3
+
+      console.log(id)
       
       const token = localStorage.getItem("token")
       const loadMembre = async () => {

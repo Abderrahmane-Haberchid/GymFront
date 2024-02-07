@@ -28,9 +28,13 @@ export default function Login() {
               }
               )
           .then(response => {
-                      response?.status === 200 && toast.success("Connectée !")
-                      localStorage.setItem("token", response.data.token)
-                      redirect("/")
+
+                      if(response.status === 200){
+                        toast.success("Connectée !")
+                        localStorage.setItem("token", response.data.token)
+                        redirect("/home")
+                      } 
+                      
                     
           })
           .catch(errors => {
@@ -62,7 +66,7 @@ export default function Login() {
             <a href="#">Forget Your Password?</a>
             <button>Sign In</button>
 
-            <h2>Don't have an account ?</h2><h2><Link to="auth/register">Register now</Link></h2>
+            <h2>Don't have an account ?</h2><h2><Link to="/register">Register now</Link></h2>
         </form>
     </div>
    

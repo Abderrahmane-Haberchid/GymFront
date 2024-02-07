@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import '../css/style.css';
-import { Link } from 'react-router-dom';
-import { redirect } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 
 function Sidebar() {
 
     const [menuIcon, setMenuIcon] = useState("fa-solid fa-bars fa-xl burger")
-
+    
+    //Responsive menu
     const displayMenu = () => {
         const sidebar = document.getElementById('sidebarid')
         if (sidebar.style.transform == 'translateX(0px)') {
@@ -64,13 +65,19 @@ function Sidebar() {
         }
       }
     }, [])
-
+const navigate = useNavigate()
     const logout = () => {
-        localStorage.setItem("token", "")
-        if (localStorage.getItem("token") === "") {
-            return redirect("/auth")
+        
+        if (localStorage.setItem("token", "")) {
+            toast.success("You are Logged out ! See you soon :)")
+             navigate("/auth")
         }        
-    }
+    } 
+
+
+    
+
+    
 
   return (
     <>
@@ -84,8 +91,8 @@ function Sidebar() {
             <div className='burger-menu'>
               <i className={(menuIcon)} onClick={displayMenu}></i>
             </div>
-               {click === false && <i className='bx bx-chevron-left bx-sm toggle' onClick={hidesidebar}></i>}
-               {click === true && <i className='bx bx-chevron-right bx-sm toggle' onClick={hidesidebar}></i>}
+               {click === false && <i className='bx bx-chevron-left' onClick={hidesidebar}></i>} <i class='bx ' ></i>
+               {click === true && <i className='bx bx-chevron-right' onClick={hidesidebar}></i>}
         </div>
         <div className='sidebar-list'>
             <ul>
@@ -122,7 +129,7 @@ function Sidebar() {
                 </li>
                 <br />
                 <li>
-                    <Link to="/auth" className='links' onClick={logout}>
+                    <Link className='links' onClick={logout}>
                         <i className='bx bx-log-out  bx-sm icon'></i>    
                         <span className='text'>Log out</span>
                     </Link>
@@ -148,7 +155,7 @@ function Sidebar() {
        <div className='footer'> 
             
             
-            <span className='footer-text'>Dvelopped by Abderrahmane HABERCHID. 2023.</span>
+            <span className='footer-text'>Developed by Abderrahmane HABERCHID. 2023-24.</span>
               
        </div>
     

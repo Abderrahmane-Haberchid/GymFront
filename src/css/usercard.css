@@ -3,10 +3,11 @@
 /*------User card -------------*/
 
 .usercard-list{
-    position: relative;    
-    max-width: 1090px;
+    position:relative;
     margin-top: 30px;
     left: 250px;
+    width: 80%;
+    height: 100vh;
     display: flex;    
     flex-wrap: wrap;
     gap:1rem;

@@ -1,7 +1,12 @@
 .app{
+    position:absolute;
+    display: block;
+    left: 0;
+    top:0;
+    width: 100vw;
+    height: auto;
     background: var(--body-color);          
     transition: var(--tran-03);
-    overflow-x: hidden;
 }
 .app.dark{
     --body-color: #18191A;    

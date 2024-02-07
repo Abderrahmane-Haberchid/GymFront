@@ -9,11 +9,11 @@ import CompteDetails from '../components/compteDetail/CompteDetails'
 import AddMembreForm from '../components/AddMembreForm'
 import { redirect } from 'react-router-dom'
 import toast, { resolveValue } from 'react-hot-toast'
+import { decodeToken } from "react-jwt";
 
 function Membres() {    
 
     const [rows, setRows] = useState([])
-    const [payments, setPayments] = useState([])
     const [pending, setPending] = useState(true)
     const [search, setSearch] = useState(rows)
 
@@ -40,12 +40,13 @@ function Membres() {
                  'Authorization': `Bearer ${token}`,
             }
         }
-        await axios.get(`http://localhost:8081/api/v1/membres/all`, config)
+        const tokenD = localStorage.getItem("token")
+
+        const decoded = decodeToken(tokenD)
+
+        await axios.get(`http://localhost:8081/api/v1/user/${decoded.sub}`, config)
                     .then(res =>{
-                        
-                        const result = res.data
-                        setRows(result.sort((a, b) => b.id_membre - a.id_membre))  
-                        setPayments(result.paymentsSet) 
+                        setRows(res.data.membreSet.sort((a, b) => b.id_membre - a.id_membre))  
                         setPending(false)
                     })
                     .catch((errors) => {
@@ -109,7 +110,7 @@ function Membres() {
         },
         {            
             name: "Prix",
-            selector: row => row.age,
+            selector: row => row.paiementsSet.prix,
             sortable: true,
             width: "100px"
         },
@@ -135,26 +136,27 @@ function Membres() {
         selectAllRowsItemText: 'Tous',
     }
     const customStyles = {
-        table: {
-            style:{
-                position: 'relative',
-                backgroundColor: 'var(--sidebar-color)',
-                marginTop: '50px',
-                marginLeft: '30px',
-                width: '100%',
-                fontSize: '16px', 
-                position: 'relative'
-            }            
-        },
+
         tableWrapper: {
             style: {
-                width: '100%',
+                width: '70%',
+                position: 'relative',
+                display: 'flex',
+                justifyContent: 'center',
+                borderRadius: '20px',
+                left: '250px',
+                backgroundColor: 'var(--sidebar-color)',
             },
-        },    
-        responsiveWrapper: {
-            style: {
-            },
+        },  
+        table: {
+            style:{
+                margin: '20px',
+                marginLeft: '30px',
+                fontSize: '16px'
+            }            
         },
+          
+        
         headRow: {
             style: {
                 height: '40px',
@@ -199,7 +201,7 @@ function Membres() {
     </div>
 
     {/*-----------Table des Membres--------*/}
-    <div className='container'>
+    
 
     {/*******Bouton d'ajout d'un nouveau Membre**********/}
       <div className='table-header'> 
@@ -235,7 +237,7 @@ function Membres() {
                 Clicked
                 />
 
-    </div>
+    
 
     <AddMembreForm display={addForm} setDisplay={setAddForm} />
 

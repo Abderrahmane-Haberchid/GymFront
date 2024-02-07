@@ -2,8 +2,8 @@ import '../css/supplements.css'
 import protein from '../img/protein.png'
 import vitamine from '../img/vitamine.png'
 import React, { useState } from 'react'
-import AddSale from 'C:/xampp/htdocs/gym_frontend/gym-dashboard/src/components/suppComponents/AddSale';
-import AddProduct from 'C:/xampp/htdocs/gym_frontend/gym-dashboard/src/components/suppComponents/AddProduct';
+import AddSale from '/Users/abderahman/Developer/GymFront/GymFrontend/src/components/suppComponents/AddSale.jsx';
+import AddProduct from '/Users/abderahman/Developer/GymFront/GymFrontend/src/components/suppComponents/AddProduct.jsx';
 import DataTable from 'react-data-table-component';
 
 function Supplements() {
@@ -78,16 +78,6 @@ function Supplements() {
     <AddSale display={showAddSaleForm} setDisplay={setShowAddSaleForm} />
     <AddProduct display={showAddProductForm} setDisplay={setShowAddProductForm} />
 
-    <div className='sorting-option'>
-            <span>Trier par</span>
-            <select className='sorting-list'>   
-                <option name='tous' selected>Tous</option>
-                <option name='payés'>Payés</option>
-                <option name='impayés'>Impayés</option>
-                <option name='inactif'>Désactivés</option>
-                <option name='blacklist'>Blacklisté</option>
-            </select>
-       </div>
        
      
 

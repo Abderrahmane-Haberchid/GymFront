@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import 'C:/xampp/htdocs/gym_frontend/gym-dashboard/src/css/payment.css'
+import '/Users/abderahman/Developer/GymFront/GymFrontend/src/css/payment.css'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import LoaderTablePayments from '../LoaderTablePayments'

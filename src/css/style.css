@@ -126,19 +126,27 @@
     
     
 }
-.toggle{
+.bx-chevron-left{ 
     right: -14px;
     position: absolute;
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
     color: var(--toggle-color);
     background: var(--primary-color);
     border-radius: 50%;
     transition: var(--tran-02);
-}
-.toggle:hover{
-    width: 32px;
-    height: 32px;
+    font-size: 25px;
+    cursor: pointer;
+}.bx-chevron-right{
+    right: -14px;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    color: var(--toggle-color);
+    background: var(--primary-color);
+    border-radius: 50%;
+    transition: var(--tran-02);
+    font-size: 25px;
     cursor: pointer;
 }
 .text{

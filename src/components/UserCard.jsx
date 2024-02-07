@@ -6,12 +6,12 @@ import avatar from '../img/avatar.jpg'
 import Loader from './Loader';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { redirect } from 'react-router-dom';
 import CompteDetails from './compteDetail/CompteDetails';
+import { decodeToken } from "react-jwt";
 
 function UserCard() {
 
-    const [users, setUsers] = useState([])
+    const [users, setUsers] = useState({})
     const [showCompte, setShowCompte] = useState(false)
     const [ pending, setPending ] = useState(true)
     const [idmembre, setIdMembre] = useState()
@@ -23,10 +23,15 @@ function UserCard() {
       setIdMembre(e.currentTarget.id)
     }
 
+    const token = localStorage.getItem("token")
+
+    const decoded = decodeToken(token)
+
+    const [membreCount, setMembreCount] = useState(0)
+
       const dataLoader = async () => {
 
-        const token = localStorage.getItem("token")
-              await axios.get('http://localhost:8081/api/v1/membres/all',
+              await axios.get(`http://localhost:8081/api/v1/user/${decoded.sub}`,
                               {
                                 headers: {
                                 'Content-Type': 'application/json',
@@ -35,8 +40,10 @@ function UserCard() {
                               }
                       )
                       .then(res => {
-                        const data = res.data
-                        setUsers(data.sort((a, b) => b.id_membre - a.id_membre))
+
+                          setMembreCount(res.data.membreSet.length)
+
+                        setUsers(res.data.membreSet.sort((a, b) => b.id_membre - a.id_membre))
                         setPending(false)
                       })
                       .catch(errors => {
@@ -56,18 +63,25 @@ function UserCard() {
        }
     
   return (
-    <> 
     
+    
+    <>
 
     <div className='search-container'>
+
+          <div>
+          <h3>{membreCount} Membres</h3>
+          <br />
+          </div>
           
           <div>
             <i className="fa-solid fa-magnifying-glass search-icon"></i>
             <input type='text' className='search-input' placeholder='Chercher par Nom' onChange={handleSearch} />
           </div>  
+
     </div>
     <div className='usercard-list'>
-    
+
     { pending === false &&
     users.filter((user) =>{
         return search.toLowerCase() === '' ? user : user.nom.toLowerCase().includes(search)
@@ -91,14 +105,16 @@ function UserCard() {
                 </li>                                
                 </ul>  
     </Link> 
+    
     )}
-</div> 
+</div>        
+
 
       <CompteDetails idmembre={idmembre} display={showCompte} setDisplay={setShowCompte} />
 
       { pending === true && (<Loader />) }
-       
-    </>
+</>    
+    
   )
 }
 

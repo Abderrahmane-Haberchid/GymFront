@@ -1,5 +1,5 @@
 import React from 'react'
-import 'C:/xampp/htdocs/gym_frontend/gym-dashboard/src/css/actionsContent.css'
+import '/Users/abderahman/Developer/GymFront/GymFrontend/src/css/actionsContent.css'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import toast from 'react-hot-toast'

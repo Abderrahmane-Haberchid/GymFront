@@ -11,21 +11,28 @@ import Supplements from './pages/Supplemets';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivateRoutes from './utils/PrivateRoutes';
+import CheckRoute from './utils/CheckRoute';
 
 function App() {
   
   const token = localStorage.getItem("token")
 
   return (
-    <div className='app'>
+
+    
+<>
       <div><Toaster/></div>
       
 
     <Router>
     {token === "" ? "" : <Sidebar />} 
+    <div className='app'>
       <Routes>
-        <Route path='/auth' element={<Login/>} />
-        <Route path='/register' element={<Register/>} />
+
+        <Route element={<CheckRoute />} >
+          <Route path='/auth' element={<Login/>} />
+          <Route path='/register' element={<Register/>} />
+        </Route>
 
         <Route element={<PrivateRoutes />} >
               <Route path='/' element={<Home/>} />
@@ -34,9 +41,11 @@ function App() {
               <Route path="/membres" element={<Membres />} />
               <Route path="/supplements" element={<Supplements />} />
         </Route> 
+        
       </Routes>
+      </div>
     </Router>  
-    </div>
+    </>
   );
 }
 

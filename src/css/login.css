@@ -58,6 +58,7 @@ body{
     text-transform: uppercase;
     margin-top: 10px;
     cursor: pointer;
+    width: 100%;
 }
 
 .container button.hidden{

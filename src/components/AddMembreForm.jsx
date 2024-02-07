@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { Navigate } from 'react-router-dom'
+import { decodeToken } from "react-jwt";
 
 function AddMembreForm(props) {
 
@@ -20,8 +21,10 @@ function AddMembreForm(props) {
 
         const token = localStorage.getItem("token")
         const jsonData = JSON.stringify(data)
+
+        const decoded = decodeToken(token)
         
-        await axios.post(`http://localhost:8081/api/v1/membres/save`,
+        await axios.post(`http://localhost:8081/api/v1/membres/save/${decoded.sub}`,
                          jsonData, 
                          {
                             headers: {
