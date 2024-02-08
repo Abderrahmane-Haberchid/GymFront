@@ -27,7 +27,15 @@ function Register() {
                     
                     localStorage.setItem("token", res.data.token)
 
-                    toast.success("Account created ! Welcome")
+                    toast.loading("Votre compte est en cours de création...")
+
+                    setTimeout(() => {
+                        toast.success("Compte est créé avec succes !")
+                 }, 2000)
+
+                    setTimeout(() => {
+                           window.location.reload() 
+                    }, 3500)
                 }
                                
               })

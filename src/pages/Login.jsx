@@ -4,12 +4,11 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import "../css/login.css";
 import { Link } from 'react-router-dom';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
 
-  if(localStorage.getItem('token') != "")
-      redirect('/')
+  const navigate = useNavigate()
 
   const {
     register,
@@ -19,6 +18,7 @@ export default function Login() {
   } = useForm();
 
   const onSubmitLogin = (dataLogin) => {
+
     const loginData = JSON.stringify(dataLogin)
     axios.post("http://localhost:8081/api/v1/auth/login", 
               loginData,
@@ -30,9 +30,12 @@ export default function Login() {
           .then(response => {
 
                       if(response.status === 200){
-                        toast.success("Connectée !")
+                        toast.success("Bienvenue au tableau de bord !")
                         localStorage.setItem("token", response.data.token)
-                        redirect("/home")
+                        setTimeout(() => {
+                          window.location.reload()
+                        }, 1000)
+                        
                       } 
                       
                     

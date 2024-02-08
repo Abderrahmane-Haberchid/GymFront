@@ -39,24 +39,26 @@
 
 /*------Add Member Form-----*/
 
-.compte-container{   
-    margin: 0;
-    padding: 0;
-    height: 100vh;
+
+.compte-container{  
     background: var(--sidebar-color);
 }
 .form-container{
-    position: absolute;
     display: flex;
-    justify-content: center;     
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
 }
-.names-div{
-    display: flex;
+.form-container form{
+    background: var(--sidebar-color);
 }
 .form-container input{
     color: var(--text-color);
     background-color: transparent;
     
+}
+.nomInput{
+    margin-left: 10px;
 }
 .form-container input:focus{
     color: var(--text-color);
@@ -65,6 +67,9 @@
 .form-container input::placeholder {
     color: var(--text-color);
   }
+.btn{
+    width: 100%;
+}  
 
 
 @media (max-width: 700px) {

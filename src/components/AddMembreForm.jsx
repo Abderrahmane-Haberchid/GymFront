@@ -4,7 +4,6 @@ import Offcanvas from 'react-bootstrap/Offcanvas'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { Navigate } from 'react-router-dom'
 import { decodeToken } from "react-jwt";
 
 function AddMembreForm(props) {
@@ -37,6 +36,9 @@ function AddMembreForm(props) {
                     .then(response =>{
                         response?.status === 201 && toast.success('Membre ajouté')
                         reset()                        
+                        setTimeout(() => {
+                              window.location.reload()  
+                        }, 1500)
                     })  
                     .catch(errors => {
                         errors?.response?.status === 302 && toast.error("Adresse mail déjà existante !")
@@ -49,12 +51,16 @@ function AddMembreForm(props) {
      }
 
   return (
+
+    
    
-     <Offcanvas show={props.display} onHide={closeForm} placement='top' scroll="true" backdrop="true" className="offCanvas"> 
+     <Offcanvas show={props.display} onHide={closeForm} placement='end' scroll="true" backdrop="true" className="offCanvas"> 
      <div className='compte-container'>
          <Offcanvas.Header closeButton>
            <Offcanvas.Title>Créer un Membre</Offcanvas.Title>
          </Offcanvas.Header>
+
+
         <div className="form-container">
         <form onSubmit={handleSubmit(onSubmit)}>
              <div className='photo-div mb-3'>
@@ -63,68 +69,83 @@ function AddMembreForm(props) {
              </label>
              <input type='file' name="profile-photo" className='' />
              </div>
+
             <div className='row mb-3'>
-             <div className='col'> 
-                    <label for="lname" className='form-label'>
-                        Nom:
-                    </label>
+             <div className='col form-floating'> 
+                    
                     <input type='text'
                             {...register('nom', {required: "Veuillez saisir le nom"})}
                             className='form-control' 
-                            placeholder="Veuillez écrire le nom..." />
+                            placeholder="Veuillez écrire le nom..."
+                            id="lname" />
+                    <label for="lname" className='form-label nomInput'>
+                        Nom
+                    </label>        
                     {errors.nom && <p className='text text-danger mt-2'>{errors.nom.message}</p>}        
              </div>
-             <div className='col'>       
-                    <label for="fname" className='form-label'>
-                        Prénom: 
-                    </label>
+
+             <div className='col form-floating'>  
                     
                     <input type='text' 
                             {...register('prenom', {required: "Veuillez saisir le prenom"})} 
                             className='form-control' 
-                            placeholder="Veuillez écrire le prénom..." />
-                    {errors.prenom && <p className='text text-danger mt-2'>{errors.prenom.message}</p>}         
+                            placeholder="Veuillez écrire le prénom..." 
+                            id="fname" />
+                    {errors.prenom && <p className='text text-danger mt-2'>{errors.prenom.message}</p>}   
+                    <label for="fname" className='form-label nomInput'>
+                        Prénom
+                    </label>      
              </div>
              </div> 
-             <div className='email-div mb-3'>
-                    <label for="email" className='form-label'>
-                        E-mail: 
-                    </label>
+             <div className='email-div form-floating mb-3'>
+                    
                     <input type='mail' 
                             {...register('email', {required: "Veuillez saisir une adresse mail"})}
                             className='form-control' 
-                            placeholder="Adresse email..." />
-                    {errors.email && <p className='text text-danger mt-2'>{errors.email.message}</p>}         
+                            placeholder="Adresse email..." 
+                            id="email" />
+                    {errors.email && <p className='text text-danger mt-2'>{errors.email.message}</p>}  
+                    <label for="email" className='form-label'>
+                        E-mail Adresse
+                    </label>       
              </div>
              <div className='row mb-3'>
-                <div className='col'>
-                    <label for="telephone" className='form-label'>
-                        Téléphone
-                    </label>
+                <div className='col form-floating'>
+                    
                     <input type='number' 
                             {...register('telephone')}
                             className='form-control' 
-                            placeholder="Téléphone..." />
-                </div>            
-                <div className='col'>
-             
-                    <label for="age" className='form-label'>
+                            placeholder="Téléphone..."
+                            id="telephone" />
+                    <label for="telephone" className='form-label nomInput'>
                         Téléphone
-                    </label>
+                    </label>        
+                </div>            
+                <div className='col form-floating'>
+             
+                    
                     <input type='number' 
                             {...register('age')}
                             className='form-control' 
-                            placeholder="age..." />
+                            placeholder="age..."
+                            id="age" />
+
+                    <label for="age" className='form-label nomInput'>
+                        Age
+                    </label>        
                 </div>            
              </div>
-             <div className='adresse-div mb-4'>
-                    <label for="adresse" className='form-label'>
-                        Adresse: 
-                    </label>
+             <div className='adresse-div form-floating mb-4'>
+                    
                     <input type='text' 
                             {...register('adresse')}
                             className='form-control' 
-                            placeholder="Adresse postale..." />
+                            placeholder="Adresse postale..."
+                            id="adresse" />
+
+                    <label for="adresse" className='form-label'>
+                        Adresse: 
+                    </label>        
              </div>
  
              <div className='submit-btn mb-4'>

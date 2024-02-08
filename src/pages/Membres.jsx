@@ -16,6 +16,7 @@ function Membres() {
     const [rows, setRows] = useState([])
     const [pending, setPending] = useState(true)
     const [search, setSearch] = useState(rows)
+    const [stateFilter, setStateFilter] = useState(rows)
 
     // Display Compte Details
     const [idmembre, setIdMembre] = useState()
@@ -60,9 +61,28 @@ function Membres() {
       const handleSearch = (e) => {
         setSearch(e.target.value.toLowerCase())         
        }
-      const filteredData = search === '' ? rows : rows.filter((users) => {
-            return users.nom.toLowerCase().includes(search)
-        })
+       const handleStateFilterMenu = (e) => {
+            setStateFilter(e.target.value.toLowerCase())
+       }
+      //const filteredData = search === '' ? rows : rows.filter((users) => {
+      //      return users.nom.toLowerCase().includes(search)
+      //  })
+      let filteredData = ""
+
+        if(search !== ""){
+             filteredData = rows.filter((users) => {
+                return users.nom.toLowerCase().includes(search) || users.prenom.toLowerCase().includes(search) 
+            })
+        }
+        if(search === ""){
+            filteredData = rows
+       }
+        if(stateFilter !== ""){
+             filteredData = rows.filter((users) => {
+                return users.statut.toLowerCase().includes(stateFilter)
+            })
+        }
+
 
     useEffect(() => {           
        fetchdata()  
@@ -213,13 +233,11 @@ function Membres() {
 
     {/*******Liste de filtrage Payé/Impayé**********/}       
        <div className='sorting-option'>
-            <span>Trier par</span>
-            <select className='sorting-list'>   
-                <option name='tous' selected>Tous</option>
-                <option name='payés'>Payés</option>
-                <option name='impayés'>Impayés</option>
-                <option name='inactif'>Désactivés</option>
-                <option name='blacklist'>Blacklisté</option>
+            <span>Trier par</span>  
+            <select className='sorting-list' onChange={handleStateFilterMenu}>   
+                <option value='' selected>Tous</option>
+                <option value='Paid'>Payés</option>
+                <option value='Unpaid'>Impayés</option>
             </select>
        </div>
        </div>   

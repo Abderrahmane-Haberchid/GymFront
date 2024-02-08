@@ -7,6 +7,8 @@ import toast from 'react-hot-toast';
 function Sidebar() {
 
     const [menuIcon, setMenuIcon] = useState("fa-solid fa-bars fa-xl burger")
+
+    const navigate = useNavigate()
     
     //Responsive menu
     const displayMenu = () => {
@@ -65,12 +67,16 @@ function Sidebar() {
         }
       }
     }, [])
-const navigate = useNavigate()
+
     const logout = () => {
-        
-        if (localStorage.setItem("token", "")) {
-            toast.success("You are Logged out ! See you soon :)")
-             navigate("/auth")
+        localStorage.setItem("token", "")
+        if (localStorage.getItem("token") === "") {
+
+            toast.error("Vous êtes déconnecté, au revoir !")
+            setTimeout(() => {
+                window.location.reload() 
+            }, 1500)
+            
         }        
     } 
 

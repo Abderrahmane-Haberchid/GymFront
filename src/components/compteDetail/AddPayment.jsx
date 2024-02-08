@@ -26,6 +26,9 @@ function AddPayment(props) {
                                 })
                 .then(response => {
                     response.status === 200 && toast.success("Paiement validé!")
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 1000)
                 })
                 .catch(errors => {
                     errors.response.status === 400 && toast.error("Une erreur s'est produite!")

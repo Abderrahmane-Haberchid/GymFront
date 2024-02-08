@@ -55,7 +55,10 @@ function ActionsContent(props) {
                                         }
                                 })       
                     .then(response => {
-                        response.status === 202 && toast.success('Membre modifié!')                           
+                        response.status === 202 && toast.success('Membre modifié!')  
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 1000)                         
                     })
                     .catch(errors => {
                         errors.data && toast.error("Une erreur s'est produite."+ errors.response.status)
