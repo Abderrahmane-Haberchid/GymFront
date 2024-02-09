@@ -7,7 +7,6 @@ import TableLoader from '../components/TableLoader'
 import avatar from '../img/avatar.jpg'
 import CompteDetails from '../components/compteDetail/CompteDetails'
 import AddMembreForm from '../components/AddMembreForm'
-import { redirect } from 'react-router-dom'
 import toast, { resolveValue } from 'react-hot-toast'
 import { decodeToken } from "react-jwt";
 
@@ -17,6 +16,7 @@ function Membres() {
     const [pending, setPending] = useState(true)
     const [search, setSearch] = useState(rows)
     const [stateFilter, setStateFilter] = useState(rows)
+    const [membreCount, setMembreCount] = useState(0)
 
     // Display Compte Details
     const [idmembre, setIdMembre] = useState()
@@ -47,6 +47,7 @@ function Membres() {
 
         await axios.get(`http://localhost:8081/api/v1/user/${decoded.sub}`, config)
                     .then(res =>{
+                        setMembreCount(res.data.membreSet.length)
                         setRows(res.data.membreSet.sort((a, b) => b.id_membre - a.id_membre))  
                         setPending(false)
                     })
@@ -67,25 +68,22 @@ function Membres() {
       //const filteredData = search === '' ? rows : rows.filter((users) => {
       //      return users.nom.toLowerCase().includes(search)
       //  })
-      let filteredData = ""
+        let filteredData = rows
 
         if(search !== ""){
-             filteredData = rows.filter((users) => {
-                return users.nom.toLowerCase().includes(search) || users.prenom.toLowerCase().includes(search) 
-            })
+            filteredData = rows.filter((users) => {
+            return users.nom.toLowerCase().includes(search) || users.prenom.toLowerCase().includes(search) 
+        })
         }
-        if(search === ""){
-            filteredData = rows
-       }
         if(stateFilter !== ""){
-             filteredData = rows.filter((users) => {
+                filteredData = rows.filter((users) => {
                 return users.statut.toLowerCase().includes(stateFilter)
             })
-        }
+        }  
 
 
     useEffect(() => {           
-       fetchdata()  
+       fetchdata() 
     }, [])
 
     
@@ -201,8 +199,10 @@ function Membres() {
         },
         pagination:{
             style: {
-                backgroundColor: 'var(--sidebar-color)',
+                backgroundColor: 'transparent',
                 color: 'var(--text-color)',
+                fontSize: '16px',
+                marginRight: '10%',
                 transition: 'var(--tran-03)'
             }    
         }
@@ -214,10 +214,17 @@ function Membres() {
 
     {/*******Texte search input for fitrer**********/}
     <div className='search-container'>
+
+          <div className="membreCounter-container"> 
+          <p className='membreCounter-text'>{membreCount} Membres</p>
+          <br />
+          </div>
+          
           <div>
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <i className="fa-solid fa-magnifying-glass search-icon"></i>
             <input type='text' className='search-input' placeholder='Chercher par Nom' onChange={handleSearch} />
           </div>  
+
     </div>
 
     {/*-----------Table des Membres--------*/}

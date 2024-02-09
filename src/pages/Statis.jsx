@@ -17,6 +17,8 @@ Chartjs.register(
 )
 
 function Statis() {
+
+    
     const data1 = {
         labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
         datasets:[{

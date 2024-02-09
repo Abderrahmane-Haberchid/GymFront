@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useState } from 'react'
+import { decodeToken } from 'react-jwt'
 
 function AddSale(props) {
 
@@ -38,21 +39,36 @@ function AddSale(props) {
         setItemType(e.target.value)
      }
 
+     const token = localStorage.getItem("token")
+     const decoded = decodeToken(token)
+
      const onSubmit = async (dataset) =>{
-           const data = JSON.stringify(dataset) 
-           console.log(data)
-           await axios.post('http://localhost:8081/api/v1/supplements/addSale', data, {headers: {'Content-Type': 'application/json'}})
-                       .then(response => {
-                        response.status === 200 && toast.success("Vente Validée") 
-                        response.status !== 200 && toast.error("Une erreur s'est produite")                        
-                        reset()
+
+           await axios.post(`http://localhost:8081/api/v1/sale/add/${decoded.sub}`, dataset,
+                         {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization : `Bearer ${token}`
+                            }
+                        }
+                        )
+                        .then(response => {
+
+                        response.status === 200 && toast.success("Vente Validée !") 
+
+                              setTimeout(() => {
+                                window.location.reload()
+                              }, 2000)  
                        })             
+                       .catch(err => {
+                            toast.error("Une erreur s'est produite") 
+                       })
 
         }
 
   return (
    
-     <Offcanvas show={props.display} onHide={closeForm} placement='top' scroll="true" backdrop="true" className="offCanvas"> 
+     <Offcanvas show={props.display} onHide={closeForm} placement='end' scroll="true" backdrop="true" className="offCanvas"> 
      <div className='compte-container'>
          <Offcanvas.Header closeButton>
            <Offcanvas.Title>Valider une vente</Offcanvas.Title>
@@ -64,8 +80,8 @@ function AddSale(props) {
     <div className='row'>
         <div className='col mb-3'>            
             <label htmlFor="listProduit" className='mb-2'> Nom du Produit:  </label>
-             <select {...register('nom', {required: "Veuillez sélectionner un nom de produit"})} defaultValue={"séléctionner un Produit"} onChange={handleSelectedItem} className='form-control' id="listProduit">
-                        <option key={"key"} selected>séléctionner un Produit</option>
+             <select {...register('nom', {required: "Nom Requis"})}onChange={handleSelectedItem} className='form-select' id="listProduit">
+                        <option key={"key"} selected>- Produit - </option>
                 {
                     supplementsList.map((supp, index) => ( 
                         <option key={index} value={supp}>{supp}</option>
@@ -78,7 +94,7 @@ function AddSale(props) {
              {/*Selecting supplements type to sale*/}
         <div className='col mb-3'>            
             <label htmlFor="listTypeProduit" className='mb-2'> Type de Produit:  </label>
-             <select {...register('type', {required: "Veuillez séléctionner un type de produit"})} onChange={handleSelectedType} className='form-control' id="listTypeProduit">
+             <select {...register('type', {required: "Type requis"})} onChange={handleSelectedType} className='form-select' id="listTypeProduit">
                    
                 {
                     listItem === "Proteines" &&
@@ -119,7 +135,7 @@ function AddSale(props) {
 
         <div className="col mb-3">
             <label htmlFor="marqueList" className='mb-2'> Marque: </label>
-             <select {...register('marque', {required: "Veuillez séléctionner la marque du produit"})} className='form-control' id="marqueList">
+             <select {...register('marque', {required: "Marque Requise"})} className='form-select' id="marqueList">
              
                 {
                       itemType !== "" &&
@@ -132,22 +148,23 @@ function AddSale(props) {
         </div>     
         <div className="col mb-3">
             <label htmlFor="quantite" className='mb-2'> Quantité: </label>
-             <input {...register("quantity", {required: "Veuillez saisir la quantité"})}
+             <input {...register("quantity", {required: "Quantité Requise"})}
                     type='number' 
                     className='form-control'
                     id="quantite"
-                    placeholder='1' />
+                    placeholder='0' />
             {errors.quantity && <p className='text text-danger mt-2'>{errors.quantity.message}</p>}      
         </div>
     </div>
     <div className='row'>
         <div className="col mb-3">
             <label htmlFor="price" className='col-form-label mb-2'> Prix de vente unitaire: </label>
-             <input {...register("prixVente")}
+             <input {...register("prixVente", {required: "Prix Requis"})}
                     type='text' 
                     className='form-control'
                     id="price"
-                    placeholder="770 Dh" />
+                    placeholder="999 Dh" />
+            {errors.prixVente && <p className='text text-danger mt-2'>{errors.prixVente.message}</p>}        
         </div>
     </div>
         <div className='col mb-3'>

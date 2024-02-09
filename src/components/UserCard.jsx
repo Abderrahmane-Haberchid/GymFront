@@ -17,6 +17,7 @@ function UserCard() {
     const [idmembre, setIdMembre] = useState()
 
     const [search, setSearch] = useState('')
+    const [membreCount, setMembreCount] = useState(0)
 
     const handleShow = (e) => {
       setShowCompte(true)
@@ -27,7 +28,7 @@ function UserCard() {
 
     const decoded = decodeToken(token)
 
-    const [membreCount, setMembreCount] = useState(0)
+    
 
       const dataLoader = async () => {
 
@@ -69,8 +70,8 @@ function UserCard() {
 
     <div className='search-container'>
 
-          <div>
-          <h3>{membreCount} Membres</h3>
+          <div className="membreCounter-container"> 
+          <p className='membreCounter-text'>{membreCount} Membres</p>
           <br />
           </div>
           
