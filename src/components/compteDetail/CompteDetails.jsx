@@ -5,7 +5,7 @@ import ActionsContent from './ActionsContent'
 import PaymentsContent from './PaymentsContent'
 import AddPayment from './AddPayment'
 import Offcanvas from 'react-bootstrap/Offcanvas'
-import avatar from '/Users/abderahman/Developer/GymFront/GymFrontend/src/img/avatar.jpg'
+import avatar from './avatar.jpg'
 import { Link } from 'react-router-dom'
 
 function CompteDetails(props) {

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useState } from 'react'
 import { decodeToken } from 'react-jwt'
+import '../css/supplements.css';
 
 function AddProducts(props) {
 
@@ -187,7 +188,7 @@ function AddProducts(props) {
         </div>
     </div>
         <div className='submit-btn mt-4 mb-4'>
-                 <button className='btn btn-outline-primary'>
+                 <button className='btn btn-outline-primary' style={{color: "white"}}>
                     {quantity == 1 && "Ajouter Ce Produit"}
                      {quantity > 1 && "Ajouter Ces Produits"}
                  </button>

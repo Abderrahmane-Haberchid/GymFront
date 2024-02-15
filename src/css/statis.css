@@ -235,3 +235,32 @@
     background: var(--sidebar-color);
     padding: 0px;
 }
+.payments-history{
+    min-width: 340px;
+    min-height: 320px;
+    border-radius: 10px;
+    background: var(--sidebar-color);
+    padding: 0px;
+}
+#payments-history-p{
+    margin-top: 25px;
+    margin-left: 20px;
+    color: var(--text-color);
+    left: 0;
+    font-weight: 500;
+}
+#totalPayment{
+    margin-top: 25px;
+    margin-left: 20px;
+    color: var(--text-color);
+    left: 0;
+    font-weight: 500;
+}
+.history-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 20px;
+    margin-top: -25px;
+    margin-bottom: 30px;
+}

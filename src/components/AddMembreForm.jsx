@@ -34,15 +34,15 @@ function AddMembreForm(props) {
                         ) 
 
                     .then(response =>{
-                        response?.status === 201 && toast.success('Membre ajouté')
+                        response?.status === 200 && toast.success('Membre ajouté')
                         reset()                        
                         setTimeout(() => {
                               window.location.reload()  
                         }, 1500)
                     })  
                     .catch(errors => {
-                        errors?.response?.status === 302 && toast.error("Adresse mail déjà existante !")
-                        errors?.response?.status != 302 && toast.error("Une erreur générée !")
+                        errors?.response?.status === 400 && toast.error("Adresse mail déjà existante !")
+                        errors?.response?.status !== 400 && toast.error("Une erreur générée !")
                     })
      }
 

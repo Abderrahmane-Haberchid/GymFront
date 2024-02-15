@@ -11,11 +11,15 @@
     margin-left:155px;
     justify-content: left;
 }
+.add-btn button{
+    background: var(--primary-dark-color);
+    border: 0;
+}
 .add-btn button:hover{
-    animation-duration: 1s;
+    animation-duration: 0.5s;
        animation-direction: reverse;
        transition: 0.5s;
-       background-color: #512da8;
+       background-color: var(--primary-color);
 }
 .sorting-option{
     justify-content: right;
@@ -67,10 +71,14 @@
 .form-container input::placeholder {
     color: var(--text-color);
   }
-.btn{
-    width: 100%;
-}  
 
+.submit-btn button{
+    width: 100%;
+    background: var(--primary-dark-color);
+}
+.submit-btn button:hover{
+    background: var(--primary-color);
+}
 
 @media (max-width: 700px) {
     .table-header{

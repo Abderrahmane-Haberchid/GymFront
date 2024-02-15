@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../css/statis.css'
 import { Chart as Chartjs, BarElement, CategoryScale, LinearScale, Tooltip, Legend, ArcElement, LineElement,
     PointElement } from 'chart.js'
 import { Bar, Pie, Doughnut, Line } from 'react-chartjs-2';
+import DataTable from 'react-data-table-component';
+import { decodeToken } from 'react-jwt';
+import LoaderTablePayments from '../components/LoaderTablePayments'
+import axios from 'axios'
 
 
 Chartjs.register( 
@@ -18,6 +22,13 @@ Chartjs.register(
 
 function Statis() {
 
+    const [payments, setPayments] = useState([])
+    const [pending, setPending] = useState(true)
+
+    const today = new Date()
+    console.log(today.getMonth()+1)
+
+    // All chart data are here
     
     const data1 = {
         labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
@@ -52,18 +63,7 @@ function Statis() {
         }
     ]
     }
-    const data3 = {
-        labels: ['Actifs', 'Désactivés', 'Blacklistés'],
-        datasets:[{
-            label: 'nombre: ',
-            data: [89, 15, 12],
-            borderColor: 'black',
-            backgroundColor: ['#2193b0', 'rgba(255, 0, 0, 0.8)', 'rgba(0, 0, 0, 0.7)'],
-            borderWidth: 1,
-            
-        }
-    ]
-    }
+   
 
     const data4 = {
         labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
@@ -74,8 +74,8 @@ function Statis() {
             backgroundColor: ['#2193b0'],
             borderWidth: 1,
             pointStyle: 'circle',
-            pointRadius: 4,
-            pointHoverRadius: 8
+            pointRadius: 8,
+            pointHoverRadius: 12
             
         },
         {
@@ -85,8 +85,8 @@ function Statis() {
             backgroundColor: ['#753a88'],
             borderWidth: 1,
             pointStyle: 'circle',
-            pointRadius: 4,
-            pointHoverRadius: 8
+            pointRadius: 8,
+            pointHoverRadius: 12
             
         }
     ]
@@ -107,6 +107,99 @@ function Statis() {
             
         }]
     }
+    // ======= End of Data chart ==========
+
+    // Fetching payments from DB
+
+    const token = localStorage.getItem("token")
+
+    const decodedToken = decodeToken(token)
+
+    const fetchPayments = async () => {
+            await axios.get(`http://localhost:8081/api/v1/user/${decodedToken.sub}`, 
+                   { 
+                    headers: {
+                        "Content-Type": "Application/json",
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then(res => {
+                        setPayments(res.data.paiementsSet.sort((a,b) => b.id - a.id))
+                        setPending(false)
+                })
+    }
+
+    useEffect(() =>{
+        fetchPayments()
+    }, [])
+   
+        let total = 0
+        payments.map((value) => {
+            total += value.prix
+        })
+    
+      console.log(total);
+
+    // Payments history table's column
+
+    const columns = [
+        {
+            name: "Prix",
+            selector: row => row.prix + " DH",
+            sortable: true,
+            width: "90px"
+        },
+        {            
+            name: "Date",
+            selector: row => row.date_paiement,
+            sortable: true,
+        },
+        {
+            name: "Expiration",
+            selector: row => row.date_expiration,
+            sortable: true
+        }
+        
+    ]
+
+    // Styling data table
+
+    const customStyles = {
+        tableWrapper:{
+            style:{
+                
+            }
+        },
+        table: {
+            style:{
+                backgroundColor: 'var(--sidebar-color)',
+                scrollbarColor: "var(--primary-dark-color)"
+            }            
+        },
+        responsiveWrapper: {
+            style: {},
+        },
+        headRow: {
+            style: {
+                backgroundColor: 'var(--sidebar-color)',
+                color: 'var(--text-color)',
+                fontWeight: 'bold',
+                fontSize: '12px',
+                transition: 'var(--tran-03)'
+            }
+        },
+        rows: {
+            style: {
+                backgroundColor: 'var(--sidebar-color)',
+                color: 'var(--text-color)',
+                fontSize: '11px',
+                transition: 'var(--tran-03)'
+            }
+        },
+        
+        
+    }
+
   return (
     
     <div class="statis-container">
@@ -140,17 +233,40 @@ function Statis() {
 
         <div className='money-monthly'>  
           <p>Situation Financiére:</p>
-            <Line data={data4} options={options} width={680} height={320} className='chart1' />
+            <Line data={data4} options={options} width={680} height={400} className='chart1' />
         </div>
 
-        <div className='total-money-monthly'>
-        <p>Situation Financiére Globale:</p>
-            <Line data={data6} options={options} className='chart2' />
+        
+        <div className='payments-history'>
+        <p id='payments-history-p'>Historique Paiments ({payments.length })</p> 
+        <div className='history-wrapper'>
+        <p id='totalPayment'>Total: {total} DH </p>
+        
+            <form>
+            <select name='sel' className='form-select' defaultValue={"Mois"}>
+                <options selected>Mois</options>
+                <options value="Janvier">Janvier</options>
+                <options value="Fevrier">Fevrier</options>
+            </select>
+            </form>
+            
+            </div>    
+        <DataTable
+         fixedHeader    
+         columns={columns} 
+         data={payments}
+         progressPending={pending}
+         progressComponent={<LoaderTablePayments />}
+         fixedHeaderScrollHeight="400px"   
+         className='datatable'
+         highlightOnHover
+         customStyles={customStyles} 
+        />
         </div>
 
         <div className='added-member-monthly'> 
         <p>Etat des nouvelles Inscriptions:</p> 
-            <Bar data={data1} options={options} />
+            <Bar data={data1} options={options} height={400} width={300} />
         </div>
 
         <div className='added-payments-monthly'>
@@ -158,10 +274,10 @@ function Statis() {
             <Pie data={data2} options={options} />
         </div>
 
-        <div className='general-view'>
-        <p>Statuts général:</p>
-            <Doughnut data={data3} options={options} />
-        </div> 
+        <div className='total-money-monthly'>
+        <p>Situation Financiére Globale:</p>
+            <Line data={data6} options={options} height={400} width={300} className='chart2' />
+        </div>
     </div>
     </div>
   

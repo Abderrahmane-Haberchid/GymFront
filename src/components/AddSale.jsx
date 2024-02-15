@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useState } from 'react'
 import { decodeToken } from 'react-jwt'
+import '../css/supplements.css';
 
 function AddSale(props) {
 
@@ -168,7 +169,7 @@ function AddSale(props) {
         </div>
     </div>
         <div className='col mb-3'>
-                 <button className='btn btn-outline-success'>Valider la vente</button>
+                 <button className='btn btn-success valide-sale-btn'>Valider la vente</button>
         </div>
     
         </form> 

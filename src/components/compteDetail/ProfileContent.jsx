@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import '/Users/abderahman/Developer/GymFront/GymFrontend/src/css/compte.css';
+import './compte.css';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 
@@ -73,9 +73,8 @@ function ProfileContent(props) {
                        }
                     
                     <br />
-                        <div className='btn-profile'>
-                        <button className='btn btn-secondary'>Désactiver</button>    
-                        <button className='btn btn-danger'>Blacklister</button>    
+                        <div className='btn-desactiver'> 
+                        <button className='btn btn-danger'>Désactiver</button>    
                         </div>
                     
     </div>

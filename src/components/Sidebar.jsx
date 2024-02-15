@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import '../css/style.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 
 function Sidebar() {
 
     const [menuIcon, setMenuIcon] = useState("fa-solid fa-bars fa-xl burger")
-
-    const navigate = useNavigate()
     
     //Responsive menu
     const displayMenu = () => {
         const sidebar = document.getElementById('sidebarid')
-        if (sidebar.style.transform == 'translateX(0px)') {
+        if (sidebar.style.transform === 'translateX(0px)') {
+            
             sidebar.style.transform = 'translateX(-230px)'    
             setMenuIcon('fa-solid fa-bars fa-xl burger')
             

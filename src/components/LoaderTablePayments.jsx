@@ -39,12 +39,12 @@ const LoaderTablePayments = props => (
       <rect x="5" y="8" rx="3" ry="3" width="331" height="7" />
   </ContentLoader>
 )
-
+/*
 LoaderTablePayments.metadata = {
   name: 'Mohd Arif Un',
   github: 'arif-un',
   description: 'Data Table skeleton',
   filename: 'DataTable',
-}
+}*/
 
 export default LoaderTablePayments

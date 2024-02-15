@@ -71,7 +71,21 @@
     border: 1px solid var(--toggle-color);
     color: var(--text-color);
 }
-/* ----------grid div des éléments du formuaire */
+/* ----------grid div des éléments du formuaire de modifications membre */
+
+.actions-content{
+    width: 100%;
+
+}
+.actions-content button{
+    width: 350px;
+    background: var(--primary-dark-color);
+    grid-column-start: 1;
+    grid-column-end: 5;
+}
+.actions-content button:hover{
+    background: var(--primary-color);
+}
 .nomInput{
     width: 168px;    
 }
@@ -83,6 +97,12 @@
     grid-column-start: 1;
     grid-column-end: 5;
 }
+.abtInput .btn{
+    background: var(--primary-dark-color);
+}
+.abtInput .btn:hover{
+    background: var(--primary-color);
+}
 .adrInput{
     width: 350px;
     grid-column-start: 1;
@@ -93,4 +113,20 @@
 }
 .telephoneInput{
     width: 168px;
+}
+.checkDate{
+    display: flex;
+    justify-content: center;
+}
+.checkDate label{
+    font-size: 13px;
+}
+.checkDate input{
+    background: transparent;
+    height: 30px;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid var(--toggle-color);
+    color: var(--text-color);
 }

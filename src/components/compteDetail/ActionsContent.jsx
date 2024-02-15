@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import '/Users/abderahman/Developer/GymFront/GymFrontend/src/css/actionsContent.css';
+import './actionsContent.css';
 
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
@@ -55,7 +55,7 @@ function ActionsContent(props) {
                                         }
                                 })       
                     .then(response => {
-                        response.status === 202 && toast.success('Membre modifié!')  
+                        response.status === 200 && toast.success('Membre modifié!')  
                         setTimeout(() => {
                             window.location.reload()
                         }, 1000)                         

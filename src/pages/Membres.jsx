@@ -16,8 +16,6 @@ function Membres() {
     const [pending, setPending] = useState(true)
     const [search, setSearch] = useState(rows)
     const [stateFilter, setStateFilter] = useState(rows)
-    const [membreCount, setMembreCount] = useState(0)
-
     // Display Compte Details
     const [idmembre, setIdMembre] = useState()
     const [showCompte, setShowCompte] = useState(false)
@@ -47,28 +45,25 @@ function Membres() {
 
         await axios.get(`http://localhost:8081/api/v1/user/${decoded.sub}`, config)
                     .then(res =>{
-                        setMembreCount(res.data.membreSet.length)
                         setRows(res.data.membreSet.sort((a, b) => b.id_membre - a.id_membre))  
                         setPending(false)
                     })
                     .catch((errors) => {
                         if(errors.response.status  === 403) {
                             toast.error("Pease log in again !")  
-                            //redirect("/auth")
                       } 
                     })
       }     
       {/*--------Handling filtering search-------------*/}
+
+      let filteredData = ""
+
       const handleSearch = (e) => {
         setSearch(e.target.value.toLowerCase())         
        }
        const handleStateFilterMenu = (e) => {
             setStateFilter(e.target.value.toLowerCase())
        }
-      //const filteredData = search === '' ? rows : rows.filter((users) => {
-      //      return users.nom.toLowerCase().includes(search)
-      //  })
-        let filteredData = rows
 
         if(search !== ""){
             filteredData = rows.filter((users) => {
@@ -76,10 +71,10 @@ function Membres() {
         })
         }
         if(stateFilter !== ""){
-                filteredData = rows.filter((users) => {
-                return users.statut.toLowerCase().includes(stateFilter)
+            filteredData = rows.filter((users) => {
+            return users.statut.toLowerCase().includes(stateFilter)
             })
-        }  
+            }  
 
 
     useEffect(() => {           
@@ -121,14 +116,14 @@ function Membres() {
             width: "120px"
         },
         {            
-            name: "Date d'éxpriation",
-            selector: row => row.paiementsSet.date_expiration,
+            name: "Tel",
+            selector: row => row.telephone,
             sortable: true,                                                                                                         
             width: "170px"
         },
         {            
-            name: "Prix",
-            selector: row => row.paiementsSet.prix,
+            name: "Age",
+            selector: row => row.age,
             sortable: true,
             width: "100px"
         },
@@ -170,7 +165,8 @@ function Membres() {
             style:{
                 margin: '20px',
                 marginLeft: '30px',
-                fontSize: '16px'
+                fontSize: '16px',
+                cursor: 'hand'
             }            
         },
           
@@ -191,6 +187,7 @@ function Membres() {
                 color: 'var(--text-color)',
                 fontSize: '12px',
                 transition: 'var(--tran-03)',
+                cursor: 'pointer'
             },
             stripedStyle: {
                 backgroundColor: 'var(--body-color)',
@@ -208,6 +205,29 @@ function Membres() {
         }
         
     }
+
+    const conditionalRowStyles = [
+
+        {
+            when: row => row.statut === "Paid",
+            style: {
+                backgroundColor: 'rgba(63, 195, 128, 0.9)',
+                color: 'white',
+            },
+        },
+        
+        {
+            when: row => row.statut === "Unpaid",
+            style: {
+                backgroundColor: 'rgba(242, 38, 19, 0.9)',
+                color: 'white',
+                '&:hover': {
+                    cursor: 'pointer',
+                },
+            },
+        }
+    ]
+    const dataFinal = filteredData !== "" ? filteredData : rows
     
   return (
     <>
@@ -216,7 +236,7 @@ function Membres() {
     <div className='search-container'>
 
           <div className="membreCounter-container"> 
-          <p className='membreCounter-text'>{membreCount} Membres</p>
+          <p className='membreCounter-text'>{dataFinal.length} Membres</p>
           <br />
           </div>
           
@@ -250,7 +270,7 @@ function Membres() {
        </div>   
         <DataTable                   
                 columns={columns} 
-                data={filteredData}
+                data={dataFinal}
                 progressPending={pending}
                 progressComponent={<TableLoader />}
                 customStyles={customStyles}                
@@ -259,6 +279,7 @@ function Membres() {
                 responsive
                 highlightOnHover
                 onRowClicked={handleShow}
+                conditionalRowStyles={conditionalRowStyles}
                 Clicked
                 />
 

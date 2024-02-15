@@ -17,7 +17,6 @@ function UserCard() {
     const [idmembre, setIdMembre] = useState()
 
     const [search, setSearch] = useState('')
-    const [membreCount, setMembreCount] = useState(0)
 
     const handleShow = (e) => {
       setShowCompte(true)
@@ -40,9 +39,7 @@ function UserCard() {
                                 }
                               }
                       )
-                      .then(res => {
-
-                          setMembreCount(res.data.membreSet.length)
+                      .then(res => { 
 
                         setUsers(res.data.membreSet.sort((a, b) => b.id_membre - a.id_membre))
                         setPending(false)
@@ -62,6 +59,8 @@ function UserCard() {
       const handleSearch = (e) => {
         setSearch(e.target.value)         
        }
+
+       let filtered = users.length
     
   return (
     
@@ -71,7 +70,7 @@ function UserCard() {
     <div className='search-container'>
 
           <div className="membreCounter-container"> 
-          <p className='membreCounter-text'>{membreCount} Membres</p>
+          <p className='membreCounter-text'>{filtered} Membres</p>
           <br />
           </div>
           
@@ -85,9 +84,9 @@ function UserCard() {
 
     { pending === false &&
     users.filter((user) =>{
-        return search.toLowerCase() === '' ? user : user.nom.toLowerCase().includes(search)
-    })
-    .map((user, index) =>  
+       filtered = search.toLowerCase() === '' ? user : user.nom.toLowerCase().includes(search)
+      return filtered
+  }).map((user, index) =>  
 
     <Link to="/" id={user.id_membre}  key={index} className='usercard shadow' onClick={handleShow}>
                 <ul className="list-iems-card">   
@@ -98,6 +97,7 @@ function UserCard() {
                     
                     {user.statut === "Bundled" && <i className="fa-solid fa-ban fa-lg payment-state-nok"></i>}
                 </li>
+                
                 <li>
                     <p className="card-title">{user.nom}</p>
                 </li>

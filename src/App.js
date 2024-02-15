@@ -12,7 +12,6 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivateRoutes from './utils/PrivateRoutes';
 import CheckRoute from './utils/CheckRoute';
-import { useEffect, useState } from 'react';
 
 function App() {
   

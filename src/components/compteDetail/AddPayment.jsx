@@ -1,8 +1,9 @@
 import React from 'react'
-import '/Users/abderahman/Developer/GymFront/GymFrontend/src/css/actionsContent.css'
+import './actionsContent.css'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import { decodeToken } from 'react-jwt'
 
 function AddPayment(props) {
     const id = props.membreId
@@ -15,8 +16,9 @@ function AddPayment(props) {
     const onSubmit = async (data) => {
         const jsonData = JSON.stringify(data)
         const token = localStorage.getItem("token")
+        const decodedToken = decodeToken(token)
         
-        await axios.post(`http://localhost:8081/api/v1/membres/add_payment/${id}`,
+        await axios.post(`http://localhost:8081/api/v1/membres/add_payment/${id}/${decodedToken.sub}`,
                                  jsonData, 
                                  {
                                     headers: {
@@ -26,6 +28,7 @@ function AddPayment(props) {
                                 })
                 .then(response => {
                     response.status === 200 && toast.success("Paiement validé!")
+                    console.log(data)
                     setTimeout(() => {
                         window.location.reload()
                     }, 1000)
@@ -46,6 +49,7 @@ function AddPayment(props) {
                      className='abtInput-text'>
                         <option selected>Basic + Tapis Roulant</option>
                         <option>Basic + Coach</option>
+                        <option>Basic + Coach + Tapis Roulant</option>
                         <option>Basic</option>
                     </select>
                 </div>
@@ -69,7 +73,14 @@ function AddPayment(props) {
                         className='abtInput-text' />
                     {errors.prix && <p className='text text-danger mt-2'>{errors.prix.message}</p>}     
                 </div>
-                   
+                <div className='checkDate'>
+                    <label for="startDate">Compter à partir de ce jour</label>
+                    <input 
+                        {...register("dontkeepExpDate")}
+                        type='checkbox'  
+                        id='startDate'
+                        className='abtInput-text' />    
+                </div>   
                 <div className='abtInput'>             
                 <input type='submit' 
                        className='btn btn-success' 
