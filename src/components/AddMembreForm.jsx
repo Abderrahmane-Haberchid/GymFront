@@ -1,10 +1,10 @@
 
-import { React } from 'react'
+import { React, useCallback, useState } from 'react'
 import Offcanvas from 'react-bootstrap/Offcanvas'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { decodeToken } from "react-jwt";
+import { decodeToken } from "react-jwt"
 
 function AddMembreForm(props) {
 
@@ -15,20 +15,17 @@ function AddMembreForm(props) {
         formState: {isLoading, errors}
       } = useForm()
 
-     // Submit add Membre Form
-     const onSubmit = async (data) => {            
-
-        const token = localStorage.getItem("token")
-        const jsonData = JSON.stringify(data)
-
-        const decoded = decodeToken(token)
+     const onSubmit = async (data) => {   
         
-        await axios.post(`http://localhost:8081/api/v1/membres/save/${decoded.sub}`,
-                         jsonData, 
+        const token = localStorage.getItem("token")
+        const decoded = decodeToken(token)
+        const jsondata = JSON.stringify(data)
+
+        await axios.post(`http://localhost:8081/api/v1/membres/save/${decoded.sub}`, jsondata, 
                          {
                             headers: {
-                                    'Content-Type': 'application/json',
-                                    Authorization: `Bearer ${token}`
+                                    "Content-Type": "Application/json",
+                                    "Authorization": `Bearer ${token}`
                             }  
                         }
                         ) 
@@ -42,7 +39,7 @@ function AddMembreForm(props) {
                     })  
                     .catch(errors => {
                         errors?.response?.status === 400 && toast.error("Adresse mail déjà existante !")
-                        errors?.response?.status !== 400 && toast.error("Une erreur générée !")
+                        toast.error(errors?.message)
                     })
      }
 
@@ -62,14 +59,8 @@ function AddMembreForm(props) {
 
 
         <div className="form-container">
-        <form onSubmit={handleSubmit(onSubmit)}>
-             <div className='photo-div mb-3'>
-             <label className='form-label' htmlFor="profile-photo">
-                 Photo de profile
-             </label>
-             <input type='file' name="profile-photo" className='' />
-             </div>
-
+        <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className='form'>
+            
             <div className='row mb-3'>
              <div className='col form-floating'> 
                     

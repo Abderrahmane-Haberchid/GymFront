@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './actionsContent.css'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
@@ -6,6 +6,9 @@ import toast from 'react-hot-toast'
 import { decodeToken } from 'react-jwt'
 
 function AddPayment(props) {
+
+    const [payments, setPayments] = useState(0)
+
     const id = props.membreId
     const {
         register,
@@ -13,10 +16,11 @@ function AddPayment(props) {
         formState: {errors}
     } = useForm()
 
+    const token = localStorage.getItem("token")
+    const decodedToken = decodeToken(token)
+
     const onSubmit = async (data) => {
         const jsonData = JSON.stringify(data)
-        const token = localStorage.getItem("token")
-        const decodedToken = decodeToken(token)
         
         await axios.post(`http://localhost:8081/api/v1/membres/add_payment/${id}/${decodedToken.sub}`,
                                  jsonData, 
@@ -37,7 +41,25 @@ function AddPayment(props) {
                     errors.response.status === 400 && toast.error("Une erreur s'est produite!")
                 })
     }
+    // Checking if this is a new membre 
+   
+    const isNewMembre = async () => {
+         await axios.get(`http://localhost:8081/api/v1/membres/id/${id}`, 
+                       {
+                        headers: {
+                            'Content-Type': 'Application/json',
+                            Authorization: `Bearer ${token}`
+                        }
+                       } 
+                ).then(res => {
+                         setPayments(res.data.paiementsSet.length)
+                })
+    }
 
+    useEffect(() => {
+        isNewMembre()
+         
+    }, [])
   return (
     <div className='actions-content'>        
             
@@ -59,7 +81,6 @@ function AddPayment(props) {
                         {...register("type_paiement")} 
                         className='abtInput-text'>
                         <option selected>Mensuel</option>
-                        <option>Par jour</option>
                         <option>Par 3mois</option>
                         <option>Par 6mois</option>
                         <option>Annuel</option>
@@ -79,7 +100,10 @@ function AddPayment(props) {
                         {...register("dontkeepExpDate")}
                         type='checkbox'  
                         id='startDate'
-                        className='abtInput-text' />    
+                        className='abtInput-text' 
+                        {...payments > 0 ? '' : 'checked disabled'}
+                        />
+                            
                 </div>   
                 <div className='abtInput'>             
                 <input type='submit' 

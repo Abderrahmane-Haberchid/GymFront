@@ -127,7 +127,7 @@ function Sidebar() {
                     </Link>
                 </li>
                 <li>
-                    <Link className='links'>
+                    <Link to='/admin' className='links'>
                         <i className='bx bx-lock-alt  bx-sm icon'></i>    
                         <span className='text'>Admin</span>
                     </Link>

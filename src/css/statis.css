@@ -23,13 +23,12 @@
 .statis-container{
     position: relative;
     max-width: 1075px;
-    height: 100%;
+    height: 180vh;
     display: flexblock;
     justify-content: center; 
     flex-wrap: wrap;
     left: 250px;
-    top: 30px;
-    overflow: hidden;
+    margin-top: 30px;
 }
 .header-container{
     max-width: fit-content;
@@ -263,4 +262,13 @@
     margin-right: 20px;
     margin-top: -25px;
     margin-bottom: 30px;
+}
+.wrapperClass{
+    margin-top: 15px;
+    background: var(--body-color);
+}
+.datePicker{
+    width: 150px;
+    z-index: 1;
+    margin-top: -3px;
 }

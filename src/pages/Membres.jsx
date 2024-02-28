@@ -49,7 +49,7 @@ function Membres() {
                         setPending(false)
                     })
                     .catch((errors) => {
-                        if(errors.response.status  === 403) {
+                        if(errors?.response?.status  === 403) {
                             toast.error("Pease log in again !")  
                       } 
                     })
@@ -107,11 +107,11 @@ function Membres() {
             name: "Prénom",
             selector: row => row.prenom,
             sortable: true,
-            width: "120px"
+            width: "140px"
         },
         {            
             name: "Ajouté le",
-            selector: row => row.date_inscription,
+            selector: row => row.dateInscription,
             sortable: true,
             width: "120px"
         },
@@ -119,7 +119,7 @@ function Membres() {
             name: "Tel",
             selector: row => row.telephone,
             sortable: true,                                                                                                         
-            width: "170px"
+            width: "140px"
         },
         {            
             name: "Age",
@@ -145,7 +145,7 @@ function Membres() {
     const paginationComponentOptions = {
         rowsPerPageText: 'Ligne par page',
         rangeSeparatorText: 'sur',
-        selectAllRowsItem: true,
+        selectAllRowsItem: false,
         selectAllRowsItemText: 'Tous',
     }
     const customStyles = {
@@ -267,7 +267,7 @@ function Membres() {
                 <option value='Unpaid'>Impayés</option>
             </select>
        </div>
-       </div>   
+         
         <DataTable                   
                 columns={columns} 
                 data={dataFinal}
@@ -276,6 +276,7 @@ function Membres() {
                 customStyles={customStyles}                
                 paginationComponentOptions={paginationComponentOptions}
                 pagination
+
                 responsive
                 highlightOnHover
                 onRowClicked={handleShow}
@@ -283,11 +284,11 @@ function Membres() {
                 Clicked
                 />
 
-    
+
 
     <AddMembreForm display={addForm} setDisplay={setAddForm} />
 
-    <CompteDetails idmembre={idmembre} display={showCompte} setDisplay={setShowCompte} />
+    <CompteDetails idmembre={idmembre} display={showCompte} setDisplay={setShowCompte} /></div> 
     </>
   )
 }

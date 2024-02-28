@@ -9,6 +9,7 @@ import Statis from './pages/Statis';
 import Membres from './pages/Membres';
 import Supplements from './pages/Supplemets';
 import Login from './pages/Login';
+import Admin from './pages/Admin';
 import Register from './pages/Register';
 import PrivateRoutes from './utils/PrivateRoutes';
 import CheckRoute from './utils/CheckRoute';
@@ -42,6 +43,7 @@ function App() {
               <Route path="/statistiques" element={<Statis />} />
               <Route path="/membres" element={<Membres />} />
               <Route path="/supplements" element={<Supplements />} />
+              <Route path="/admin" element={<Admin />} />
         </Route> 
         
       </Routes>

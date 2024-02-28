@@ -27,8 +27,6 @@ function UserCard() {
 
     const decoded = decodeToken(token)
 
-    
-
       const dataLoader = async () => {
 
               await axios.get(`http://localhost:8081/api/v1/user/${decoded.sub}`,
@@ -45,9 +43,8 @@ function UserCard() {
                         setPending(false)
                       })
                       .catch(errors => {
-                        if(errors.response.status  === 403) {
-                          toast.error("403 error !"+token)  
-                         // redirect("/auth")
+                        if(errors?.response?.status  === 403) {
+                          toast.error("403 error !")  
                         } 
                         else toast.error("An error has occured !")
                       })

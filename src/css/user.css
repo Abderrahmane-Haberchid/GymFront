@@ -1,0 +1,19 @@
+.wrapper-admin{
+    display:block;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    color: var(--text-color);
+    background: var(--body-color);
+    
+    margin-top: 160px;
+    margin-left: 600px;
+    row-gap: 10px;
+    height: 100vh;
+}
+.title{
+    margin-bottom: 30px;
+}
+.updateBtn{
+    margin-top: 20px;
+}

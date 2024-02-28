@@ -7,6 +7,7 @@
     flex-wrap: wrap;
     margin-left: 250px;
     max-width: 80%;
+    height: 120vh;
     background: transparent;
 }
 .sale-div{
@@ -62,6 +63,8 @@
     width: 200px;
     height: 100px;
     border-radius: 15px;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
 }
 .prot{
     width: 50px;
@@ -77,6 +80,8 @@
     width: 200px;
     height: 100px;
     border-radius: 15px;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
 }
 .vitamine{
     display: flex;
@@ -88,6 +93,8 @@
     width: 200px;
     height: 100px;
     border-radius: 15px;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
 }
 .gainer{
     display: flex;
@@ -99,4 +106,57 @@
     width: 200px;
     height: 100px;
     border-radius: 15px;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+}
+.gainer:hover{
+    color:white;
+    background: var(--primary-color);
+}
+.protein:hover{
+    color:white;
+    background: var(--primary-color);
+}
+.vitamine:hover{
+    color:white;
+    background: var(--primary-color);
+}
+.creatine:hover{
+    color:white;
+    background: var(--primary-color);
+}
+.show-menu{
+    display: flex;
+    justify-content: space-between;
+    width: 45%;
+}
+.allproduct-btn{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+    cursor: pointer;
+    margin-bottom: -15px;
+    left: 0;
+}
+.allproduct-btn:hover{
+    text-decoration: underline;
+}
+.allsales-btn{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+    cursor: pointer;
+    margin-bottom: -15px;
+    left: 0;
+}
+.allsales-btn:hover{
+    text-decoration: underline;
+}
+.products-table{
+    display: block;
+    transition: 1s;
+}
+.sales-table{
+    display: none;
+    transition: ease-in-out 1s;
 }

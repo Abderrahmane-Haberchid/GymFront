@@ -3,14 +3,14 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import "../css/login.css";
-import { redirect } from 'react-router-dom';
 
 function Register() {
 
     const {
         register,
         reset,
-        handleSubmit
+        handleSubmit,
+        formState: {errors}
     } = useForm()
 
     const onSubmitRegister = (dataRegister) => {
@@ -62,19 +62,42 @@ function Register() {
         </div>
         <span>or use your email for registeration</span>
         <input type="text"
-               {...register('name')} 
+               {...register('username',
+                         {required: 'Username Requis', 
+                         minLength: {
+                            value: 4,
+                            message: "Username trop court!",
+                          },
+                        }         
+               )} 
                placeholder="Gym Club Name" 
             />
+        {errors.username && <p className='text text-danger mt-2'>{errors.username.message}</p>}      
 
         <input type="mail"
-               {...register('email')}  
+               {...register('email', {
+                required: 'Email Requis',
+                pattern: {
+                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                  message: 'Addresse mail invalide !',
+                },
+              })}  
                placeholder="Email" 
             />
+        {errors.email && <p className='text text-danger mt-2'>{errors.email.message}</p>}      
 
         <input type="password" 
-               {...register('password')} 
+               {...register('password', 
+                            {required: 'Password Requis', 
+                            minLength: {
+                                value: 4,
+                                message: "Password trop court!",
+                              },
+                            }
+                            )} 
                placeholder="Password" 
             />
+        {errors.password && <p className='text text-danger mt-2'>{errors.password.message}</p>}      
         <button>Sign Up</button>
     </form>
     </div>

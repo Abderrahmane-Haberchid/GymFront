@@ -7,10 +7,18 @@ import AddPayment from './AddPayment'
 import Offcanvas from 'react-bootstrap/Offcanvas'
 import avatar from './avatar.jpg'
 import { Link } from 'react-router-dom'
+import Dropzone from 'react-dropzone'
+import toast from 'react-hot-toast'
+import { ProgressBar } from 'react-bootstrap'
+import Membre from './Membre'
 
 function CompteDetails(props) {
+    const [progress, setProgress] = useState({started: false, pc: 0})
+    
+    //const [membre, setMembre] = useState([])
+    const [image, setImage] = useState(null)
+    
 
-    const [membre, setMembre] = useState([])
     {/*-----------Account section----------*/}
 
     const [showProfile, setShowProfile] = useState(true);
@@ -49,36 +57,39 @@ function CompteDetails(props) {
       }
       
       const id = props.idmembre === "" ? "" : props.idmembre
-      //const id = 3
-
-      console.log(id)
-      
       const token = localStorage.getItem("token")
-      const loadMembre = async () => {
-                
-                await axios.get(`http://localhost:8081/api/v1/membres/id/${id}`, 
-                            {
-                                headers: {
-                                    "Content-Type": "Application/json",
-                                    "Authorization": `Bearer ${token}`,
-                                }
-                            }
-                        )
-                       .then(response => {
-                            setMembre(response.data)
-                       })
-                       .catch(errors =>{
-                            console.log(errors)
-                       })
+
+     
+
+      const handleUpload = async () => {
+
+        const formData = new FormData()
+        formData.append("file", image)
+
+            await axios.post(`http://localhost:8081/api/v1/membres/upload/${id}`, formData, 
+            {
+                onUploadProgress: (eventProgress) => setProgress((prevState) => {
+                    return {...prevState, pc: eventProgress.progress*100}
+                }),
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+            ).then(res => {
+                toast.success("Image chargé !")
+            })
+            .catch(errors => {
+                toast.error(errors?.response?.status)
+            })
       }
-      useEffect(() =>{
-            loadMembre()
-      },[id])
 
   return (
 
-     <Offcanvas show={props.display} onHide={handleClose} placement='end' scroll="true" backdrop="true" className="offCanvas"> 
+     <Offcanvas show={props.display} onHide={handleClose} placement='end' scroll="true" backdrop="true" className="offCanvas">
+        
      <div className='compte-container'>
+     <ProgressBar now={progress} label={progress.pc} />
          <Offcanvas.Header closeButton>
            <Offcanvas.Title>Détail Compte</Offcanvas.Title>
          </Offcanvas.Header>
@@ -86,9 +97,30 @@ function CompteDetails(props) {
            
              <center>
              <div className='compte-container-header'>
-              <img src={avatar} alt="" width="80" className="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm" />
-              <p>{membre.prenom} {membre.nom}</p>
+              <img src={image !== null ? URL.createObjectURL(image) : avatar} 
+                    style={{width:"100px", height:"100px", backgroundImage:"cover"}} 
+                    className="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm" />
+
+              <Membre membreId = {props.idmembre} />
              </div>  
+
+             <Dropzone onDrop={acceptedFiles => {
+                setImage(acceptedFiles[0]);
+                handleUpload();
+                }    
+                }>
+                    {({getRootProps, getInputProps}) => (
+                        <section>
+                        <div {...getRootProps()} onDrop={handleUpload}>
+                            <input {...getInputProps()} />
+                            <p>Drag 'n' drop some files here, or click to select files</p>
+                        </div>
+                        </section>
+                    )}
+             </Dropzone>
+
+             
+
              </center>  
              <div className='compte-container-body-btn'>
                  <Link to=""
