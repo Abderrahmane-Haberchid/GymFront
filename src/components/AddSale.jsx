@@ -82,7 +82,7 @@ function AddSale(props) {
         <div className='col mb-3'>            
             <label htmlFor="listProduit" className='mb-2'> Nom du Produit:  </label>
              <select {...register('nom', {required: "Nom Requis"})}onChange={handleSelectedItem} className='form-select' id="listProduit">
-                        <option key={"key"} selected>- Produit - </option>
+                    <option key="key1" selected> - Autre - </option>
                 {
                     supplementsList.map((supp, index) => ( 
                         <option key={index} value={supp}>{supp}</option>
@@ -96,7 +96,7 @@ function AddSale(props) {
         <div className='col mb-3'>            
             <label htmlFor="listTypeProduit" className='mb-2'> Type de Produit:  </label>
              <select {...register('type', {required: "Type requis"})} onChange={handleSelectedType} className='form-select' id="listTypeProduit">
-                   
+             <option key="key1" selected> - Autre - </option>
                 {
                     listItem === "Proteines" &&
                     proteinType.map((supp, index) => ( 
@@ -137,7 +137,7 @@ function AddSale(props) {
         <div className="col mb-3">
             <label htmlFor="marqueList" className='mb-2'> Marque: </label>
              <select {...register('marque', {required: "Marque Requise"})} className='form-select' id="marqueList">
-             
+             <option key="key1" selected> - Autre - </option>
                 {
                       itemType !== "" &&
                       marque.map((supp, index) => (

@@ -75,6 +75,7 @@
 .usercard:hover{    
     cursor: pointer;
     background: var(--primary-color);
+    color: white;
 }
 .card-title{
     color: white;

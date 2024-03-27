@@ -4,6 +4,8 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useForm } from 'react-hook-form'
+import watsapp from '../img/watsapp.webp'
+import { Link } from 'react-router-dom'
 
 function Admin(){
 
@@ -37,7 +39,15 @@ function Admin(){
 
         useEffect(() => {
             fetchUser()
-        })            
+        }, [])            
+
+        let creationDate = user.created_at 
+        const day = creationDate?.slice(0,2)
+        const month = creationDate?.slice(3,5) 
+        const expMonth = parseInt(month) + 3
+        const year = creationDate?.slice(6,11)
+
+       const date = day + "-" + expMonth + "-" + year
 
     return(
         <div className='wrapper-admin'>
@@ -80,13 +90,26 @@ function Admin(){
                            />
                 </div>
 
-                <div className="updateBtn">
-                    
-                    <input type="submit" className="btn btn-primary"/>
+                <div className="form row">
+                    <label for="username" className="form-label" style={{color: "rgba(242, 38, 19, 0.9)", fontSize: "18px", marginTop:"20px"}}>
+                        Fin periode d'essai:
+                    </label>
+                    <input {...register('created_at')}
+                           className="form-control" 
+                           style={{background: "rgba(242, 38, 19, 0.9)", color: "white", fontSize: "17px"}}
+                           id="username"  
+                           value={date}
+                           disabled
+                           />
                 </div>
 
                 </form>
             </div >
+            <div className='contactIcon'>
+            <Link to='https://wa.me/+212674980418'   > 
+            <img src={watsapp} style={{width: "70px", height: "70px"}} />
+            </Link>
+            </div>
         </div>
     )
 }

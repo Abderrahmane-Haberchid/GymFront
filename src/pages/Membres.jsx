@@ -39,9 +39,8 @@ function Membres() {
                  'Authorization': `Bearer ${token}`,
             }
         }
-        const tokenD = localStorage.getItem("token")
 
-        const decoded = decodeToken(tokenD)
+        const decoded = decodeToken(token)
 
         await axios.get(`http://localhost:8081/api/v1/user/${decoded.sub}`, config)
                     .then(res =>{
@@ -93,7 +92,11 @@ function Membres() {
         
         {
             name: "",
-            selector: row => <img src={avatar} alt="profile" width="35" height="35" className="img-fluid rounded-circle img-thumbnail shadow-sm" />,    
+            selector: row => <img src={row.image !== "" ? `https://gympics.s3.eu-north-1.amazonaws.com/${row.image}` : avatar} 
+                                alt="profile" 
+                                style={{width:"35px", height:"35px", backgroundImage:"cover", marginTop: "15px"}} 
+                                className="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm"
+                            />,    
             sortable: true,
             width: "80px"
         },
@@ -166,7 +169,8 @@ function Membres() {
                 margin: '20px',
                 marginLeft: '30px',
                 fontSize: '16px',
-                cursor: 'hand'
+                cursor: 'hand',
+                
             }            
         },
           

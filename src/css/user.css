@@ -9,11 +9,16 @@
     margin-top: 160px;
     margin-left: 600px;
     row-gap: 10px;
-    height: 100vh;
+    height: 78vh;
 }
 .title{
     margin-bottom: 30px;
 }
 .updateBtn{
     margin-top: 20px;
+}
+.contactIcon{
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
 }

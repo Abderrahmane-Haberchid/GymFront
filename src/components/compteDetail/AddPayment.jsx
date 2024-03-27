@@ -34,7 +34,7 @@ function AddPayment(props) {
                     response.status === 200 && toast.success("Paiement validé!")
                     console.log(data)
                     setTimeout(() => {
-                        window.location.reload()
+                        window.location.reload(true)
                     }, 1000)
                 })
                 .catch(errors => {

@@ -10,12 +10,11 @@ import { Link } from 'react-router-dom'
 import Dropzone from 'react-dropzone'
 import toast from 'react-hot-toast'
 import { ProgressBar } from 'react-bootstrap'
-import Membre from './Membre'
 
 function CompteDetails(props) {
     const [progress, setProgress] = useState({started: false, pc: 0})
     
-    //const [membre, setMembre] = useState([])
+    const [membre, setMembre] = useState([])
     const [image, setImage] = useState(null)
     
 
@@ -56,15 +55,15 @@ function CompteDetails(props) {
         setShowPayments(false)  
       }
       
-      const id = props.idmembre === "" ? "" : props.idmembre
+      let id = props.idmembre
       const token = localStorage.getItem("token")
 
-     
-
+      
       const handleUpload = async () => {
 
         const formData = new FormData()
         formData.append("file", image)
+        setProgress((prevState) => ({...prevState, started: true}))
 
             await axios.post(`http://localhost:8081/api/v1/membres/upload/${id}`, formData, 
             {
@@ -78,18 +77,48 @@ function CompteDetails(props) {
             }
             ).then(res => {
                 toast.success("Image chargé !")
+                setTimeout(() =>{
+                  //  window.refresh()
+                }, 3000)
             })
             .catch(errors => {
                 toast.error(errors?.response?.status)
             })
       }
 
+      const loadMembre = async () => {
+                
+        await axios.get(`http://localhost:8081/api/v1/membres/id/${id}`, 
+                    {
+                        headers: {
+                            "Content-Type": "Application/json",
+                            "Authorization": `Bearer ${token}`,
+                        }
+                    }
+                )
+               .then(response => {
+                    setMembre(response.data)
+               })
+               .catch(errors =>{
+                  //  toast.error(errors?.response?.status +" "+ errors?.response?.message)
+               })
+}
+
+      useEffect(()=>{
+         loadMembre()
+
+         setProgress((previousState) => {
+            return {...previousState, started: false}
+          })
+
+      }, [id])
+
   return (
 
      <Offcanvas show={props.display} onHide={handleClose} placement='end' scroll="true" backdrop="true" className="offCanvas">
         
      <div className='compte-container'>
-     <ProgressBar now={progress} label={progress.pc} />
+     {progress.started && <ProgressBar now={progress.pc} label={progress.pc} />}
          <Offcanvas.Header closeButton>
            <Offcanvas.Title>Détail Compte</Offcanvas.Title>
          </Offcanvas.Header>
@@ -97,11 +126,12 @@ function CompteDetails(props) {
            
              <center>
              <div className='compte-container-header'>
-              <img src={image !== null ? URL.createObjectURL(image) : avatar} 
-                    style={{width:"100px", height:"100px", backgroundImage:"cover"}} 
-                    className="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm" />
+            <img src={membre.image !== "" ? `https://gympics.s3.eu-north-1.amazonaws.com/${membre.image}` : avatar}  
+                    style={{width:"90px", height:"90px", backgroundImage:"cover"}} 
+                    className="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm" /> 
+                 
+                 <p style={{fontWeight: "700"}}>{membre.prenom} {membre.nom}</p> 
 
-              <Membre membreId = {props.idmembre} />
              </div>  
 
              <Dropzone onDrop={acceptedFiles => {
@@ -110,10 +140,10 @@ function CompteDetails(props) {
                 }    
                 }>
                     {({getRootProps, getInputProps}) => (
-                        <section>
+                        <section style={{cursor: "pointer"}}>
                         <div {...getRootProps()} onDrop={handleUpload}>
                             <input {...getInputProps()} />
-                            <p>Drag 'n' drop some files here, or click to select files</p>
+                            <p>Drag 'n' drop une image ici ou click pour selectionner</p>
                         </div>
                         </section>
                     )}

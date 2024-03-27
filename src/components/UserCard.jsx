@@ -58,12 +58,16 @@ function UserCard() {
        }
 
        let filtered = users.length
+
+       // Image profile logic 
+
+
     
   return (
     
     
     <>
-
+    { pending === true && (<Loader />) }
     <div className='search-container'>
 
           <div className="membreCounter-container"> 
@@ -80,6 +84,7 @@ function UserCard() {
     <div className='usercard-list'>
 
     { pending === false &&
+
     users.filter((user) =>{
        filtered = search.toLowerCase() === '' ? user : user.nom.toLowerCase().includes(search)
       return filtered
@@ -88,7 +93,11 @@ function UserCard() {
     <Link to="/" id={user.id_membre}  key={index} className='usercard shadow' onClick={handleShow}>
                 <ul className="list-iems-card">   
                 <li>
-                    <img src={avatar} alt="" width="70" className="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm" />
+                    <img src={user.image !== "" ? `https://gympics.s3.eu-north-1.amazonaws.com/${user.image}` : avatar} 
+                            alt="" 
+                            style={{width:"70px", height:"70px", backgroundImage:"cover"}} 
+                            className="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm"
+                            />
                     {user.statut === "Paid" && <i className='bx bx-checkbox-checked bx-md payment-state-ok' ></i>}
                     {user.statut === "Unpaid" && <i className="fa-solid fa-triangle-exclamation bx-sm payment-state-nok"></i>}
                     
@@ -99,7 +108,7 @@ function UserCard() {
                     <p className="card-title">{user.nom}</p>
                 </li>
                 <li>
-                    <span className="card-subtitle">{user.age}</span>
+                    <span className="card-subtitle">{user.age} ans</span>
                 </li>                                
                 </ul>  
     </Link> 
@@ -110,7 +119,7 @@ function UserCard() {
 
       <CompteDetails idmembre={idmembre} display={showCompte} setDisplay={setShowCompte} />
 
-      { pending === true && (<Loader />) }
+      
 </>    
     
   )

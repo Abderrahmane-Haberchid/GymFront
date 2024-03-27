@@ -39,6 +39,7 @@ function App() {
 
         <Route element={<PrivateRoutes />} >
               <Route path='/' element={<Home/>} />
+              <Route path='/gym-dashboard' element={<Home/>} />
               <Route path="/home" element={<Home />} />
               <Route path="/statistiques" element={<Statis />} />
               <Route path="/membres" element={<Membres />} />
